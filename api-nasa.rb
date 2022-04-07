@@ -45,3 +45,39 @@ def request(url, api_key)
 end
 # Prueba del método con dos argumentos 
 data = request("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=","ZXliFADZo3aNDlJSHxU6P2vf37CHG5ZdED1HPwmZ")
+
+# 2. Crear un método llamado buid_web_page que reciba el hash de respuesta con todos
+# los datos y construya una página web. Se evaluará la página creada y tiene que tener
+# este formato:
+# <html>
+# <head>
+# </head>
+# <body>
+# <ul>
+# <li><img src='.../398380645PRCLF0030000CC AM04010L1.PNG'></li>
+# <li><img src='.../398381687EDR_F0030000CCAM05010M_.JPG'></li>
+# </ul>
+# </body>
+# </html>
+# Se revisará la estructura del documento generado.
+# Creación del método solicitado
+def buid_web_page(hash)
+    # Extraemos el arreglo del hash correspondiente al key photos
+    selected_data = hash["photos"]
+    # Filtramos para solo extraer las 20 primeras fotografías
+    selected_data = selected_data[0..19]
+    # Construimos la parte superior e inferior de un html
+    html_up= "<!DOCTYPE html>\n<html lang='es'>\n<head>\n<meta charset='UTF-8'>\n<meta http-equiv='X-UA-Compatible' content='IE=edge'>\n<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n<title>Fotos Api Nasa</title>\n</head>\n<body>\n<ul>\n"
+    html_down="</ul>\n</body>\n</html>"
+    html_img=""
+    # Recorrer el arreglo a fin de leer el hash y extraer las imagenes
+    selected_data.each do |hash_int|
+        html_img += "\t<li style='list-style: none; text-align: center;'><img width=600px src='#{hash_int["img_src"]}'></li>\n"
+    end
+    # Construimos el formato html con la parte superior, imagenes e inferior
+    html =html_up+html_img+html_down
+    # Creamos el archivo index.html con la estructura Html5 
+    File.write('index.html',html)
+end
+# Probamos la ejecución del método
+buid_web_page(data)
