@@ -81,3 +81,42 @@ def buid_web_page(hash)
 end
 # Probamos la ejecución del método
 buid_web_page(data)
+
+# 3. Pregunta bonus: Crear un método photos_count que reciba el hash de respuesta y
+# devuelva un nuevo hash con el nombre de la cámara y la cantidad de fotos.
+# Creamos el método solicitado 
+def photos_count(hash)
+    # Mediante este filtro, obtenemos un arreglo de hash
+    selected_data = hash['photos']
+    # Cada registro del arreglo corresponde a un hash
+    # Contamos los hash internos
+    nbr_hash = selected_data.count
+    # Creamos un arreglo para contener los registros de cada camara 
+    reg_camera = []
+    # Debemos leer cada registro del array (hash_img) y de cada uno debemos contarlos según el key "camera" trayendo el value ()
+    # Leemos cada registro del array 
+    nbr_hash.times do |hash_img|
+        # Tenemos el hash correspondiente a cada imagen
+        selected_data[hash_img].each do |key, val_camera|
+            # Buscamos el value correspondiente al key "camera"
+            if key =="camera"
+                # Recorremos los valores del hash val_camera y obtenemos el "full_name"
+                val_camera.each do |key, val_name|
+                    if key == "full_name"
+                        # Cargamos los datos en un arreglo 
+                        reg_camera.push val_name
+                    end
+                end
+            end
+        end
+    end
+    # Creamos el hash que contendra el nombre de la cámara y la cantidad de fotos tomadas 
+    hash_nbr_cam = Hash.new(0)
+    reg_camera.each do |nbr_cam|
+        hash_nbr_cam[nbr_cam]+=1
+    end
+    # File.write('datos.txt',hash_nbr_cam)
+    puts hash_nbr_cam
+end
+# Probamos la correcta ejecución del metodo 
+photos_count(data)
